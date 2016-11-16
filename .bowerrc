@@ -1,0 +1,5 @@
+{
+  "directory": "public/bower_components",
+  "strict-ssl" : false,
+  "no-proxy":"bower.herokuapp.com,github.com"
+}
