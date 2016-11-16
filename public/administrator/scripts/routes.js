@@ -34,17 +34,17 @@ define(['angular','app','angular-ui-router'], function(angular,app,uirouter){
                       parent:'adminParent',
                       url:'/administrator/main',
                       templateUrl:'views/main.html',
-                      //resolve:{isLoggedIn:['$q','$http',function($q,$http){
-                            //return isLoggedIn($q,$http);
-                      //}]}
+                      resolve:{isLoggedIn:['$q','$http',function($q,$http){
+                            return isLoggedIn($q,$http);
+                      }]}
                   }).state('edit_products',{
                       parent:'adminParent',
                       url: '/administrator/edit_products',
                       controller:'editProductsCtrl',
                       templateUrl: 'views/edit-products.html',
-                      //resolve:{isLoggedIn:['$q','$http',function($q,$http){
-                            //return isLoggedIn($q,$http);
-                     // }]}
+                      resolve:{isLoggedIn:['$q','$http',function($q,$http){
+                        return isLoggedIn($q,$http);
+                     }]}
                   });
         
         

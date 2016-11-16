@@ -2,8 +2,6 @@ define(['angular','../module'],function(angular,editProductsModule){
     
     editProductsModule.factory('EditProductsSvc',['$rootScope','$http','$q',function($rootScope,$http,$q){
         
-        var baseServiceUrl = 'http://' + $rootScope.ipAddress + '/admin/';
-        
         
         var getAllProducts = function(){
             
@@ -11,7 +9,7 @@ define(['angular','../module'],function(angular,editProductsModule){
             
             var myDeferred = $q.defer();
             
-            $http.get(baseServiceUrl + 'getAllProducts').then(function(productData){
+            $http.get('/admin/getAllProducts').then(function(productData){
                 myDeferred.resolve(productData);
             })
             

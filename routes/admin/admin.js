@@ -94,8 +94,6 @@ router.route('/isLoggedIn').get(function(request,response,next){
             if(err) {
                 return console.error('error running query', err);
              }
-        
-            console.log(result.rows[0]);
     
             if(result){
                 request.session.save();
