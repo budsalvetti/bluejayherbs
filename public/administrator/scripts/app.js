@@ -19,6 +19,7 @@ define(['jquery','angular','routes','./modules/main'],function($,angular){
         
                          $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams, error) {
                              if (angular.isObject(error) && angular.isString(error.code)) {
+                                debugger;
                                 switch (error.code) {
                                 case 'UNAUTHORIZED':
                                 $state.go('login');
@@ -31,6 +32,8 @@ define(['jquery','angular','routes','./modules/main'],function($,angular){
 
         
                         alert("in Main controller");
+
+                          debugger;
         
     }]);
     
