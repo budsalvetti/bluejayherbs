@@ -27,8 +27,6 @@ router.route('/getSymptomsList').get(function (request, response) {
 				return console.error('error running query', err);
 			}
 
-			console.log(result.rows[0]);
-
 			if(result.rows && result.rows.length){
 				response.status(200);
 				response.json(result);
@@ -39,6 +37,37 @@ router.route('/getSymptomsList').get(function (request, response) {
 		});
 
 	});
+
+});
+
+
+router.route('/getProductsBySymptomId').get(function(request,response){
+
+	var symptomId = request.query.symptom_id;
+
+	db.connect(function(err, client, done) {
+
+		if(err) {
+			return console.error('error fetching client from pool', err);
+		}
+
+	client.query('select * from products where products."productID" in(select product_id from product_sample_indications where sample_indications_id=$1)',[symptomId], function(err, result) {
+
+		//call `done()` to release the client back to the pool
+		done();
+
+		if(err) {
+			return console.error('error running query', err);
+		}
+
+		if(result.rows && result.rows.length){
+			response.status(200);
+			response.json(result);
+		}
+
+	});
+
+});
 
 });
 
