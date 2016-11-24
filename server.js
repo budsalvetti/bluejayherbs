@@ -4,6 +4,7 @@ var app = express();
 app.use(express.static('./public'));
 
 var adminRoutes = require('./routes/admin/admin');
+var storeRoutes = require('./routes/store/store');
 
 // begin redis and session storage setup
 var redis = require("redis");
@@ -33,7 +34,12 @@ app.use(session({store: new RedisStore(redisStoreOptions),
 //end redis and session storage
 
 
+//admin routes
 app.use('/admin',adminRoutes);
+
+
+//store routes
+app.use('/store',storeRoutes);
 
 
 app.listen(8080, function () {

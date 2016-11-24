@@ -1,7 +1,4 @@
 
-
-var cors = require('cors');
-
 var db = require('../../database_connection');
 var express = require('express');
 var bodyParser = require('body-parser');
@@ -59,7 +56,7 @@ router.route('/dologin').post(parseUrlencoded, function (request, response) {
     
 });
   
-  //cors enabled
+
 router.route('/isLoggedIn').get(function(request,response,next){
           console.log('isLoggedIn');
       if(!request.session.isLoggedIn){
@@ -78,8 +75,7 @@ router.route('/isLoggedIn').get(function(request,response,next){
           return response.json(landingPageOptions);
   });
   
-  
-    //cors enabled
+
   router.route('/getAllProducts').get(function(request,response){
 
         db.connect(function(err, client, done) {
@@ -110,8 +106,6 @@ router.route('/isLoggedIn').get(function(request,response,next){
     });
 });
   
-  
 
-console.log('exporting router');
 module.exports = router;
 
