@@ -3,16 +3,15 @@ var app = express();
 
 app.use(express.static('./public'));
 
+
+//API endpoints
 var adminRoutes = require('./routes/admin/admin');
-var storeRoutes = require('./routes/store/store');
+var storeBrowseRoutes = require('./routes/store/store');
+var storeCartRoutes = require('/routes/store/cart');
 
 // begin redis and session storage setup
 var redis = require("redis");
 var redisClient = redis.createClient();
-
-
-var cors = require('cors');
-
 
 redisClient.on('connect',function(){
     console.log('redis client connected');
@@ -35,11 +34,13 @@ app.use(session({store: new RedisStore(redisStoreOptions),
 
 
 //admin routes
-app.use('/admin',adminRoutes);
+app.use('/admin', adminRoutes);
 
+//store browse routes
+app.use('/store', storeBrowseRoutes);
 
-//store routes
-app.use('/store',storeRoutes);
+//store cart routes
+app.use('/store/cart', storeCartRoutes);
 
 
 app.listen(8080, function () {

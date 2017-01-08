@@ -9,11 +9,111 @@ var Promise = require('promise');
 var router = express.Router();
 
 
+//all productsCache will just be an object keyed by product id
+var allProductsCache = null;
+
+
+/**
+ * @function populateProductsCache
+ */
+var populateProductsCache = function(){
+
+	/**
+	 * getSizePrices
+	 * @param productCategoryId
+	 * @returns promise
+	 */
+	var getSizePrices = function(productCategoryId){
+
+		return new Promise(function(resolve,reject){
+
+			db.connect(function dbConnectionClient(err,client,done){
+
+				client.query('select * from retail_size_price where product_category_id=$1' ,[productCategoryId], function (err, result) {
+
+					done();
+
+					if (err) {
+						reject(err);
+					}else{
+						resolve(result);
+					}
+
+				});
+
+			});
+
+		});
+
+	};
+
+
+	return new Promise(function(resolve,reject){
+
+		allProdsPromise = new Promise(function(resolve,reject){
+
+			db.connect(function(err, client, done) {
+				if(err) {
+					return console.error('error fetching client from pool', err);
+				}
+
+				client.query('select * from products',function(err, queryResult){
+					if (err) {
+						reject(err);
+					}else{
+						resolve(queryResult);
+					}
+				});
+			});
+
+		}).then(function(queryResult){
+
+			var i = 0;
+
+			if(Array.isArray(queryResult.rows) && queryResult.rows.length){
+
+				//we got a result so initialize the allProductsCache
+				allProductsCache = {};
+
+				var recursFunc = function(){
+
+					//add prod data keyed by productId
+					allProductsCache[queryResult.rows[i].product_id] = queryResult.rows[i];
+
+					getSizePrices(queryResult.rows[i].product_category_id).then(function(sizePrices){
+
+						//add the size_prices array to cached prod data
+						allProductsCache[queryResult.rows[i].product_id]["size_prices"] = sizePrices.rows;
+
+						if(i < queryResult.rows.length - 1){
+							//recall mysef
+							recursFunc(i++);
+						}else{
+							//now we are done and all size prices for each row
+							//have been populated
+							resolve('products are populated');
+						}
+					},function(err){
+						reject('problem populating products');
+					});
+
+				};
+
+				//call the recursive function for the first time
+				recursFunc();
+
+			}
+
+		});
+
+	});
+};
+
+
 /**
  * getSymptomsList
  */
 router.route('/getSymptomsList').get(function (request, response) {
-
 
 		// to run a query we can acquire a client from the pool,
 		// run a query on the client, and then return the client to the pool
@@ -41,10 +141,9 @@ router.route('/getSymptomsList').get(function (request, response) {
 				response.send('There was a problem retrieving symptoms list');
 			}
 		});
-
 	});
-
 });
+
 
 /**
  * getProductsBySymptomId
@@ -77,11 +176,13 @@ router.route('/getProductsBySymptomId').get(function(request,response){
 					}else{
 						resolve(result);
 					}
+
 				});
 
 			});
 
 		});
+
 	};
 
 	prodsBySymtomPromise = new Promise(function(resolve,reject){
