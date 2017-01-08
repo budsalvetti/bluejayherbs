@@ -33,6 +33,7 @@ router.route('/getSymptomsList').get(function (request, response) {
 			}
 
 			if(result.rows && result.rows.length){
+				console.log('returning symptoms list');
 				response.status(200);
 				response.json(result.rows);
 			}else{
@@ -68,6 +69,8 @@ router.route('/getProductsBySymptomId').get(function(request,response){
 			db.connect(function dbConnectionClient(err,client,done){
 
 				client.query('select * from retail_size_price where product_category_id=$1' ,[productCategoryId], function (err, result) {
+
+					done();
 
 					if (err) {
 						reject(err);
@@ -161,6 +164,8 @@ router.route('/getProductsByHealthCategory').get(function(request,response){
 
 				client.query('select * from retail_size_price where product_category_id=$1' ,[productCategoryId], function (err, result) {
 
+					done();
+
 					if (err) {
 						reject(err);
 					}else{
@@ -175,14 +180,16 @@ router.route('/getProductsByHealthCategory').get(function(request,response){
 
 	prodsByHealthCatPromise = new Promise(function(resolve,reject){
 
-		db.connect(function(err, client, done) {
+		db.connect(function(err,client,done) {
+
 			if(err) {
 				return console.error('error fetching client from pool', err);
 			}
 
-			client.query(prodQueryStr, [healthCategoryId],
+			client.query(prodQueryStr, [healthCategoryId], function(err, queryResult){
 
-				function(err, queryResult){
+					done();
+
 					if (err) {
 						reject(err);
 					}else{
@@ -235,7 +242,7 @@ router.route('/getHealthCategories').get(function (request, response) {
 
 	// to run a query we can acquire a client from the pool,
 	// run a query on the client, and then return the client to the pool
-	db.connect(function(err, client, done) {
+	db.connect(function(err,client,done) {
 
 		if(err) {
 			return console.error('error fetching client from pool', err);
@@ -251,6 +258,7 @@ router.route('/getHealthCategories').get(function (request, response) {
 			}
 
 			if(result.rows && result.rows.length){
+				console.log('returning health categories');
 				response.status(200);
 				response.json(result.rows);
 			}else{
