@@ -6,90 +6,111 @@ var parseUrlEncoded = bodyParser.urlencoded({ extended: false });
 
 var router = express.Router();
 
-var CartItem = function(name,productId,sizePriceId,quantity){
 
+//had to move this out of CartItem object because redis won't store
+//the functions
+var cartItemUpdateCost = function(cartItem){
+  var item = cartItem;
+
+    return new Promise(function(resolve,reject){
+      db.connect(function(err,client,done){
+        client.query('select * from retail_size_price where id=$1',[item.sizePriceId], function (err, result) {
+          done();
+          if (err) {
+            reject(err);
+          }else{
+            item.size = result.rows[0].size;
+            item.price = Number(result.rows[0].price);
+            item.total = item.price * item.quantity;
+            resolve(item);
+          }
+        });
+      });
+    });
+};
+
+var CartItem = function(name,productId,sizePriceId,quantity){
    this.name = name;
    this.quantity = quantity || 1;
    this.price = 0;
    this.productId = productId;
    this.size = '';
    this.sizePriceId = sizePriceId;
-
-   this.update = function(){
-
-     var _this = this;
-
-      return new Promise(function(resolve,reject){
-         db.connect(function(err,client,done){
-            client.query('select * from retail_size_price where id=$1',[_this.sizePriceId], function (err, result) {
-               done();
-               if (err) {
-                  reject(err);
-               }else{
-                 _this.size = result.rows[0].size;
-                 _this.price = Number(result.rows[0].price);
-                 _this.total = _this.price * _this.quantity;
-                  resolve(_this);
-               }
-            });
-         });
-      });
-   };
-
 };
 
 
-var Cart = function(){
+//had to move this out of Cart object because redis won't store
+//the functions
+var cartAddItem = function(cart,name,productId,sizePriceId,quantity){
+    var newItem = new CartItem(name,productId,sizePriceId,quantity);
+    cart.items.push(newItem);
+};
 
+//had to move this out of Cart object because redis won't store
+//the functions
+var cartFindItem = function (cart, productId, sizePriceId){
+  return cart.items.filter(function(item){
+    return item.productId === productId && item.sizePriceId === sizePriceId;
+  })[0];
+};
+
+//had to move this out of Cart because redis won't store javascript functions in session
+//resets all prices and totals
+//we don't want users setting prices by hacking
+var cartUpdate = function(cart){
+  //zero out the total
+  var myCart = cart;
+  myCart.cartTotal = 0;
+  var i = 0;
+
+  return new Promise(function(resolve,reject){
+
+    if(myCart.items.length){
+
+      var recurseUpdate = function(){
+        cartItemUpdateCost(myCart.items[i]).then(function(updatedItem){
+            myCart.cartTotal += updatedItem.total;
+            if(i < myCart.items.length -1){
+              recurseUpdate(i++);
+            } else {
+              resolve('updated successfully');
+            }
+          },
+          function(err){
+            reject('there has been a problem updating the cart');
+          });
+      };
+
+      recurseUpdate();
+
+    } else {
+      resolve('no items in cart');
+    }
+  });
+};
+
+
+cartRemoveItem = function(cart,productId,sizePriceId){
+  var currItem;
+  var itemIndex;
+
+  for(var i = 0; i< cart.items.length; i++){
+     currItem = cart.items[i];
+      if(currItem.productId === productId  && currItem.sizePriceId === sizePriceId ){
+        itemIndex = i;
+        break;
+      }
+  }
+
+  if(itemIndex){
+    cart.items.splice(itemIndex,1);
+  }
+
+};
+
+var Cart = function(){
    this.items = [];
    this.cartTotal = 0;
-
-    this.addItem = function(name,productId,sizePriceId,quantity){
-      var newItem = new CartItem(name,productId,sizePriceId,quantity);
-      this.items.push(newItem);
-   };
-
-   this.findItem = function (productId, sizePriceId){
-      return this.items.filter(function(item){
-         return item.productId === productId && item.sizePriceId === sizePriceId;
-      })[0];
-   };
-
-   this.update = function(){
-
-      //zero out the total
-      this.cartTotal = 0;
-      var i = 0;
-
-      var _this = this;
-
-      return new Promise(function(resolve,reject){
-
-              if(_this.items.length){
-
-                 var recurseUpdate = function(){
-
-                    _this.items[i].update().then(function(updatedItem){
-                         _this.cartTotal += updatedItem.total;
-                         if(i < _this.items.length -1){
-                            recurseUpdate(i++);
-                         } else {
-                                    resolve('updated successfully');
-                                }
-                        },
-                        function(err){
-                            reject('there has been a problem updating the cart');
-                        });
-
-                 }
-
-                 recurseUpdate();
-
-              } else {
-                resolve('no items in cart');
-              }
-      });
-   };
 };
 
 
@@ -97,25 +118,25 @@ router.route('/addItem').post(parseUrlEncoded,function(request,response){
 
    //create cart if there is not one
    if(!request.session.cart){
-      request.session.cart =  JSON.encode(new Cart());
+      request.session.cart =  new Cart();
    }
 
-   var cart = JSON.parse(request.session.cart);
+   var cart = request.session.cart;
    var productId = Number(request.body.productid);
    var sizePriceId = Number(request.body.sizepriceid);
    var name = request.body.name;
    var quantity = Number(request.body.quantity);
 
-   var existingItemInCart = cart.findItem(productId, sizePriceId);
+   var existingItemInCart = cartFindItem(cart,productId, sizePriceId);
 
    //update the quantity if the item is already in the cart
    if(existingItemInCart ){
       existingItemInCart.quantity += quantity;
    } else {
-      cart.addItem(name,productId,sizePriceId,quantity);
+      cartAddItem(cart,name,productId,sizePriceId,quantity);
    }
 
-   cart.update().then(function(){
+   cartUpdate(cart).then(function(){
     response.status(200);
     response.json(cart)
    },function(){
