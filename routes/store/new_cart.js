@@ -6,10 +6,10 @@ var parseUrlEncoded = bodyParser.urlencoded({ extended: false });
 
 var router = express.Router();
 
-var CartItem = function(productId,sizePriceId){
+var CartItem = function(name,productId,sizePriceId,quantity){
 
-   this.name = '';
-   this.quantity = 1;
+   this.name = name;
+   this.quantity = quantity || 1;
    this.price = 0;
    this.productId = productId;
    this.size = '';
@@ -17,14 +17,19 @@ var CartItem = function(productId,sizePriceId){
 
    this.update = function(){
 
+     var _this = this;
+
       return new Promise(function(resolve,reject){
          db.connect(function(err,client,done){
-            client.query('select * from retail_size_price where id=$1',[this.sizePriceId], function (err, result) {
+            client.query('select * from retail_size_price where id=$1',[_this.sizePriceId], function (err, result) {
                done();
                if (err) {
                   reject(err);
                }else{
-                  resolve(result);
+                 _this.size = result.rows[0].size;
+                 _this.price = Number(result.rows[0].price);
+                 _this.total = _this.price * _this.quantity;
+                  resolve(_this);
                }
             });
          });
@@ -39,50 +44,34 @@ var Cart = function(){
    this.items = [];
    this.cartTotal = 0;
 
-   this.addItem = function(productId,sizePriceId){
-      var newItem = new CartItem(productId,sizePriceId);
+    this.addItem = function(name,productId,sizePriceId,quantity){
+      var newItem = new CartItem(name,productId,sizePriceId,quantity);
       this.items.push(newItem);
    };
 
-   /**
-    * @function findItem
-    * @param productId
-    * @param sizePriceId
-    * @returns {cartItem}
-    */
    this.findItem = function (productId, sizePriceId){
       return this.items.filter(function(item){
          return item.productId === productId && item.sizePriceId === sizePriceId;
       })[0];
    };
 
-   /**
-    * @function update
-    * @description updates all items and cart total
-    */
    this.update = function(){
 
       //zero out the total
       this.cartTotal = 0;
-
-      //first update the item prices and item totals from the database
-      var itemsLength = this.items.length;
       var i = 0;
 
       var _this = this;
 
       return new Promise(function(resolve,reject){
 
-              if(itemsLength > 0){
+              if(_this.items.length){
 
                  var recurseUpdate = function(){
 
-                    this.items[i].update().then(function(queryResult){
-                         var result = queryResult.rows[0];
-                         _this.cartTotal += result.price;
-                         item.price = result.price;
-                         item.total = item.quantity * item.price;
-                         if(i < itemsLength -1){
+                    _this.items[i].update().then(function(updatedItem){
+                         _this.cartTotal += updatedItem.total;
+                         if(i < _this.items.length -1){
                             recurseUpdate(i++);
                          } else {
                                     resolve('updated successfully');
@@ -108,20 +97,22 @@ router.route('/addItem').post(parseUrlEncoded,function(request,response){
 
    //create cart if there is not one
    if(!request.session.cart){
-      request.session.cart = new Cart();
+      request.session.cart =  JSON.encode(new Cart());
    }
 
-   var cart = request.session.cart;
-   var productId = request.body.productid;
-   var sizePriceId = request.body.sizepriceid;
+   var cart = JSON.parse(request.session.cart);
+   var productId = Number(request.body.productid);
+   var sizePriceId = Number(request.body.sizepriceid);
+   var name = request.body.name;
+   var quantity = Number(request.body.quantity);
 
    var existingItemInCart = cart.findItem(productId, sizePriceId);
 
    //update the quantity if the item is already in the cart
    if(existingItemInCart ){
-      existingItemInCart.quantity += request.body.quantity;
+      existingItemInCart.quantity += quantity;
    } else {
-      request.session.cart.addItem(productId,sizePriceId);
+      cart.addItem(name,productId,sizePriceId,quantity);
    }
 
    cart.update().then(function(){

@@ -3,12 +3,6 @@ var app = express();
 
 app.use(express.static('./public'));
 
-
-//API endpoints
-var adminRoutes = require('./routes/admin/admin');
-var storeBrowseRoutes = require('./routes/store/store');
-var storeCartRoutes = require('./routes/store/new_cart');
-
 // begin redis and session storage setup
 var redis = require("redis");
 var redisClient = redis.createClient();
@@ -16,6 +10,12 @@ var redisClient = redis.createClient();
 redisClient.on('connect',function(){
     console.log('redis client connected');
 });
+
+
+//API endpoints
+var adminRoutes = require('./routes/admin/admin');
+var storeBrowseRoutes = require('./routes/store/store');
+var storeCartRoutes = require('./routes/store/new_cart');
 
 
 var session = require("express-session");
