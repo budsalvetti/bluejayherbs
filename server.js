@@ -7,7 +7,7 @@ app.use(express.static('./public'));
 //API endpoints
 var adminRoutes = require('./routes/admin/admin');
 var storeBrowseRoutes = require('./routes/store/store');
-var storeCartRoutes = require('/routes/store/cart');
+var storeCartRoutes = require('./routes/store/new_cart');
 
 // begin redis and session storage setup
 var redis = require("redis");
