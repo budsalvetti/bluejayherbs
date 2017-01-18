@@ -18,7 +18,11 @@ define(['angular','app','angular-ui-router'], function(angular,app,uirouter){
                             parent:'mainParent',
                             url:'/',
                             templateUrl:'views/home.html'
-                  })
+                  }).state('store',{parent:'mainParent',
+                                    url:'/store',
+                                    templateUrl:'views/store.html',
+                                    controller:'storeCtrl'});
+
         $urlRouterProvider.otherwise('/');
         
     }]);

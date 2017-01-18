@@ -1,0 +1,1 @@
+define(['./store/main'],function(){});

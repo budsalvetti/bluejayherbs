@@ -29,6 +29,10 @@ var cartItemUpdateCost = function(cartItem){
     });
 };
 
+var cartItemUpdateQuantity = function(cartItem,newQuantity){
+   cartItem.quantity = Number(newQuantity);
+};
+
 var CartItem = function(name,productId,sizePriceId,quantity){
    this.name = name;
    this.quantity = quantity || 1;
@@ -105,8 +109,8 @@ cartRemoveItem = function(cart,productId,sizePriceId){
   if(itemIndex){
     cart.items.splice(itemIndex,1);
   }
-
 };
+
 
 var Cart = function(){
    this.items = [];
@@ -127,6 +131,7 @@ router.route('/addItem').post(parseUrlEncoded,function(request,response){
    var name = request.body.name;
    var quantity = Number(request.body.quantity);
 
+
    var existingItemInCart = cartFindItem(cart,productId, sizePriceId);
 
    //update the quantity if the item is already in the cart
@@ -136,6 +141,7 @@ router.route('/addItem').post(parseUrlEncoded,function(request,response){
       cartAddItem(cart,name,productId,sizePriceId,quantity);
    }
 
+  //return the complete updated cart data
    cartUpdate(cart).then(function(){
     response.status(200);
     response.json(cart)

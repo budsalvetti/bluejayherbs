@@ -1,11 +1,10 @@
 define(['jquery','angular','routes','./modules/main'],function($,angular){
     'use strict';
     
-    return angular.module('bluejayherbsApp',['bluejayherbs.Routes']).controller('MainCtrl',['$rootScope',
-                        '$scope',
-                        '$state',
-                        '$stateParams',
-                        function($rootScope,$scope,$state,$stateParams){
+    return angular.module('bluejayherbsApp',['bluejayherbs.Routes',
+                                             'store.services.storeService',
+                                             'store.service.cartService',
+                                             'store.controllers.storeCtrl']).controller('MainCtrl',['$rootScope','$scope','$state', '$stateParams', function($rootScope,$scope,$state,$stateParams){
                         
         
                          window.App = $rootScope.App = {
@@ -15,8 +14,6 @@ define(['jquery','angular','routes','./modules/main'],function($,angular){
 
         
                         alert("in Main controller");
-
-                          debugger;
         
     }]);
     
