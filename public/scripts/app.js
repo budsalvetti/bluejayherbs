@@ -3,7 +3,7 @@ define(['jquery','angular','routes','./modules/main'],function($,angular){
     
     return angular.module('bluejayherbsApp',['bluejayherbs.Routes',
                                              'store.services.storeService',
-                                             'store.service.cartService',
+                                             'store.services.cartService',
                                              'store.controllers.storeCtrl']).controller('MainCtrl',['$rootScope','$scope','$state', '$stateParams', function($rootScope,$scope,$state,$stateParams){
                         
         

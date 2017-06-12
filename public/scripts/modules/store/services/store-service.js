@@ -1,6 +1,6 @@
 define(['angular'],function(angular){
 	'use strict';
-	return angular.module('store.services.storeService').factory('storeService',['$http',function($http){
+	return angular.module('store.services.storeService',[]).factory('storeService',['$http',function($http){
 
 		  var _getAllProducts = function(){
 				return $http.get('/store/getAllProducts')

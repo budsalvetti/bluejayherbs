@@ -2,7 +2,7 @@ define(['angular'],function(angular){
 
 	'use strict';
 
-	return angular.module('store.services.cartService').factory('cartService',['$http',function($http){
+	return angular.module('store.services.cartService',[]).factory('cartService',['$http',function($http){
 
 		var _addItem = function(){
 
