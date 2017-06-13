@@ -23,12 +23,17 @@ require.config({
         'app': './app',
         'angular': '../bower_components/angular/angular',
         'angular-ui-router': '../bower_components/angular-ui-router/release/angular-ui-router',
-        'jquery': '../bower_components/jquery/dist/jquery.min'
+        'jquery': '../bower_components/jquery/dist/jquery.min',
+        'bootstrap':'../bower_components/bootstrap/dist/js/bootstrap.min'
     },
     shim:{
         'angular':{
             deps: ['jquery'],
             exports: 'angular'
+        },
+        'bootstrap':{
+            deps:['jquery'],
+            exports:'bootstrap'
         },
         'angular-ui-router':{
             deps:['angular']
