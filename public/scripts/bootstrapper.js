@@ -1,5 +1,5 @@
 require(['../config'],function(config){
-	require(['bootstrap','angular','app'],function(bootstrap,angular,app){
+	require(['bootstrap','angular','angular-bootstrap','app'],function(bootstrap,angular,angular_bootstrap,app){
 		angular.bootstrap(document, [app.name]);
 	});
 });

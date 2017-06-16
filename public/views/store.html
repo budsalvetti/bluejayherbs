@@ -1,1 +1,59 @@
-<div><h1>This is the Store</h1></div>
+<div class="container">
+<nav class="navbar navbar-inverse">
+
+    <span>
+        View Products By:
+    </span>
+
+    <div style="margin-right:5px;margin-left:5px">
+        <!-- Products By Dropdown -->
+        <div class="dropdown">
+            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" ng-bind="selectedProductsBy.label">
+                <span class="caret"></span></button>
+            <ul class="dropdown-menu">
+                <li ng-repeat="productBy in productsByArr" ng-click="setProductsBy(productBy)" ng-bind="productBy.label"></li>
+            </ul>
+        </div>
+    </div>
+
+    <div>
+
+    <!--Begin Symptoms dropdown -->
+    <div class="dropdown" ng-if="selectedProductsBy.value === 'symptom'">
+        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+            {{selectedSymptom.name}}
+            <span class="caret"></span>
+        </button>
+        <div class="dropdown-menu">
+            <input type="text" placeholder="filter" style="width:95%;margin:5px" ng-model="symptomFilter"/>
+            <ul style="list-style:none;padding-left:5px;height:300px;overflow-y:auto">
+                <li ng-repeat="symptom in symptomsList | filter:symptomFilter | orderBy:'+name' track by symptom.id" ng-click="selectSymptom(symptom)" ng-bind="symptom.name"></li>
+            </ul>
+        </div>
+    </div>
+    <!-- End Symptoms dropdown -->
+
+    <!-- Begin Health Category dropdown-->
+    <div class="dropdown" ng-if="selectedProductsBy.value === 'healthCategory'">
+        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+            {{selectedHealthCategory.name}}
+            <span class="caret"></span>
+        </button>
+        <div class="dropdown-menu">
+            <input type="text" placeholder="filter" style="width:95%;margin:5px" ng-model="healthCatFilter"/>
+        <ul style="list-style:none;padding-left:5px;height:300px;overflow-y:auto">
+            <li ng-repeat="category in healthCategoriesList | filter:healthCatFilter | orderBy:'+name' track by category.id " ng-click="selectHealthCategory(category)" ng-bind="category.name"></li>
+        </ul>
+        </div>
+    </div>
+    <!-- End Health Category dropdown -->
+
+    </div>
+
+    <div style="margin-left:5px;">
+       <input type="text" class="form-control" placeholder="search product by name" style="width:300px;">
+    </div>
+
+</div>
+
+</nav>

@@ -19,9 +19,13 @@ define(['angular','app','angular-ui-router'], function(angular,app,uirouter){
                             url:'/',
                             templateUrl:'views/home.html'
                   }).state('store',{parent:'mainParent',
-                                    url:'/store',
+                                    url:'/storebrowse',
                                     templateUrl:'views/store.html',
-                                    controller:'storeCtrl'});
+                                    controller:'storeCtrl',
+                                    resolve:{productsByEntries:['storeService',function(storeService){
+                                      return storeService.getProductsByEntries();
+                                    }]}
+                                    });
 
         $urlRouterProvider.otherwise('/');
         
