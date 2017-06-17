@@ -2,16 +2,20 @@ define(['angular'],function(angular){
 	'use strict';
 	return angular.module('store.services.storeService',[]).factory('storeService',['$q','$http',function($q,$http){
 
+		  var _findProductsByName = function(productName){
+					return $http.get('/store/findProductsByName',{params:{product_name:productName}});
+			};
+
 		  var _getAllProducts = function(){
 				return $http.get('/store/getAllProducts')
 			};
 
 		  var _getProductsByHealthCat = function(healthCategoryId){
-				return $http.get('/store/getProductsByHealthCategory',{id:healthCategoryId});
+				return $http.get('/store/getProductsByHealthCategory',{params:{id:healthCategoryId}});
 			};
 
 		  var _getProductsBySymptomId = function(symtomId){
-				return $http.get('/store/getProductsBySymptomId',{id:symptomId});
+				return $http.get('/store/getProductsBySymptomId',{params:{id:symptomId}});
 			};
 
 		/**
@@ -31,7 +35,9 @@ define(['angular'],function(angular){
 				return deferred.promise;
 			};
 
-		  return {getAllProducts:_getAllProducts,
+		  return {
+							findProductsByName:_findProductsByName,
+							getAllProducts:_getAllProducts,
 							getProductsByEntries:_getProductsByEntries,
 			        getProductsByHealthCat:_getProductsByHealthCat,
 			        getProductsBySymptomId:_getProductsBySymptomId

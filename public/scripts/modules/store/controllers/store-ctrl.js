@@ -10,6 +10,9 @@ define(['angular'],function(angular){
 
 		$scope.selectedProductsBy = $scope.productsByArr[0];
 
+		$scope.searchingProducts = false;
+		$scope.productSearchResults = [];
+
 		$scope.selectedSymptom = {name:'Select A Symptom',id:null};
 		$scope.selectedHealthCategory = {name:'Select A Health Category',id:null};
 		$scope.symptomFilter = '';
@@ -18,6 +21,17 @@ define(['angular'],function(angular){
 		$scope.healthCategoriesList = productsByEntries.healthCategoriesList;
 
 		$scope.symptomsList = productsByEntries.symptomsList;
+
+		/**
+		 * @function searchProductsByName
+		 * @param productName
+		 */
+		$scope.searchProductsByName = function(productName){
+
+			$scope.searchingProducts = true;
+
+			return storeService.findProductsByName(productName);
+		};
 
 		$scope.setProductsBy = function(productsBy){
 			$scope.selectedProductsBy = productsBy;
@@ -30,6 +44,8 @@ define(['angular'],function(angular){
 		$scope.selectSymptom = function(symptom){
 			$scope.selectedSymptom = symptom;
 		};
+
+
 
 	}]);
 

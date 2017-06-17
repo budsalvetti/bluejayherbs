@@ -25,7 +25,7 @@ require.config({
         'angular-ui-router': '../bower_components/angular-ui-router/release/angular-ui-router',
         'jquery': '../bower_components/jquery/dist/jquery.min',
         'bootstrap':'../bower_components/bootstrap/dist/js/bootstrap.min',
-        'angular-bootstrap':'../bower_components/angular-bootstrap/ui-bootstrap.min',
+        'angular-bootstrap':'../bower_components/angular-bootstrap/ui-bootstrap-tpls.min',
 
     },
     shim:{

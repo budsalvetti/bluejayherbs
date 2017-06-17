@@ -58,6 +58,9 @@ var populateProductsCache = function(){
 				}
 
 				client.query('select * from products',function(err, queryResult){
+
+					done();
+
 					if (err) {
 						reject(err);
 					}else{
@@ -108,6 +111,114 @@ var populateProductsCache = function(){
 
 	});
 };
+
+/**
+ * findProductsByName
+ */
+router.route('/findProductsByName').get(function(request,response){
+
+	var name = request.query.product_name + '%';
+	var current_product_category_id;
+	var prodQueryStr = 'select * from products where lower(name) like $1';
+	var resultRows = [];
+	var i = 0;
+
+	console.log('in /findProductsByName');
+	console.log(prodQueryStr);
+
+	/**
+	 * getSizePrices
+	 * @param productCategoryId
+	 * @returns promise
+	 */
+	var getSizePrices = function(productCategoryId){
+
+		return new Promise(function(resolve,reject){
+
+			db.connect(function dbConnectionClient(err,client,done){
+
+				client.query('select * from retail_size_price where product_category_id=$1' ,[productCategoryId], function (err, result) {
+
+					done();
+
+					if (err) {
+						reject(err);
+					}else{
+						resolve(result);
+					}
+
+				});
+
+			});
+
+		});
+
+	};
+
+	var prodsByNamePromise = new Promise(function(resolve,reject){
+
+		console.log('in promise');
+
+		db.connect(function(err, client, done) {
+			if(err) {
+				return console.error('error fetching client from pool', err);
+			}
+
+			client.query(prodQueryStr, [name], function(err, queryResult){
+
+					done();
+
+					if (err) {
+						reject(err);
+					}else{
+						resolve(queryResult);
+					}
+				});
+		});
+
+	}).then(function(queryResult){
+
+		console.log('got the first result');
+
+		var i = 0;
+
+		if(Array.isArray(queryResult.rows) && queryResult.rows.length){
+
+			console.log('query result rows length is ' + queryResult.rows.length);
+
+			var recursFunc = function(){
+
+				getSizePrices(queryResult.rows[i].product_category_id).then(function(sizePrices){
+
+					console.log("in getSizePrices");
+
+					queryResult.rows[i]["size_prices"] = sizePrices.rows;
+
+					if(i < queryResult.rows.length - 1){
+						//recall mysef
+						recursFunc(i++);
+					}else{
+						//now we are done and all size prices for each row
+						//have been populated
+						response.json(queryResult.rows);
+					}
+				},function(err){
+					response.status(500).end();
+				});
+
+			};
+
+			//call the recursive function for the first time
+			recursFunc();
+
+		} else{
+			response.json([]);
+		}
+	},function(error){
+		response.status(500).send(error);
+	});
+
+});
 
 
 /**
@@ -192,9 +303,10 @@ router.route('/getProductsBySymptomId').get(function(request,response){
 				return console.error('error fetching client from pool', err);
 			}
 
-			client.query(prodQueryStr, [symptomId],
+			client.query(prodQueryStr, [symptomId], function(err, queryResult){
 
-				function(err, queryResult){
+				done();
+
 					if (err) {
 						reject(err);
 					}else{

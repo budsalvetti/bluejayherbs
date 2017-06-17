@@ -4,7 +4,8 @@ define(['jquery','angular','routes','./modules/main'],function($,angular){
     return angular.module('bluejayherbsApp',['bluejayherbs.Routes',
                                              'store.services.storeService',
                                              'store.services.cartService',
-                                             'store.controllers.storeCtrl']).controller('MainCtrl',['$rootScope','$scope','$state', '$stateParams', function($rootScope,$scope,$state,$stateParams){
+                                             'store.controllers.storeCtrl',
+                                            'ui.bootstrap']).controller('MainCtrl',['$rootScope','$scope','$state', '$stateParams', function($rootScope,$scope,$state,$stateParams){
                         
         
                          window.App = $rootScope.App = {
