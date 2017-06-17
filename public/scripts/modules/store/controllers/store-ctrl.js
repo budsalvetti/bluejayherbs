@@ -30,7 +30,17 @@ define(['angular'],function(angular){
 
 			$scope.searchingProducts = true;
 
-			return storeService.findProductsByName(productName);
+			return storeService.findProductsByName(productName).then(function(response){
+
+				$scope.searchingProducts = false;
+
+				   if(response.data.length){
+
+						 return response.data.map(function(product){
+							 return product.name;
+						 })
+					 }
+			});
 		};
 
 		$scope.setProductsBy = function(productsBy){

@@ -3,7 +3,7 @@ define(['angular'],function(angular){
 	return angular.module('store.services.storeService',[]).factory('storeService',['$q','$http',function($q,$http){
 
 		  var _findProductsByName = function(productName){
-					return $http.get('/store/findProductsByName',{params:{product_name:productName}});
+					return $http.get('/store/findProductsByName',{params:{product_name:productName.toLowerCase()}});
 			};
 
 		  var _getAllProducts = function(){
