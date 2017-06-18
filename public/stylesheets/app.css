@@ -1,0 +1,12 @@
+div.bluejay-modal .modal-content {
+    max-height: 600px;
+    overflow: auto;
+}
+
+.add-to-cart-modal{
+    margin:10px;
+}
+
+.add-to-cart-modal .bj-btn-container{
+    margin-bottom:10px;
+}

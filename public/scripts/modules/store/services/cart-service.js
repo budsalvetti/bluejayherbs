@@ -4,8 +4,8 @@ define(['angular'],function(angular){
 
 	return angular.module('store.services.cartService',[]).factory('cartService',['$http',function($http){
 
-		var _addItem = function(){
-
+		var _addItem = function(item){
+			return $http.post('/store/cart/addItem',item,{});
 		};
 
 		var _removeItem = function(){

@@ -1,7 +1,8 @@
 var db = require('../../database_connection');
 var express = require('express');
 var bodyParser = require('body-parser');
-var parseUrlEncoded = bodyParser.urlencoded({ extended: false });
+var parseUrlEncoded = bodyParser.urlencoded({ extended: true });
+var jsonParser = bodyParser.json();
 
 
 var router = express.Router();
@@ -118,7 +119,7 @@ var Cart = function(){
 };
 
 
-router.route('/addItem').post(parseUrlEncoded,function(request,response){
+router.route('/addItem').post(jsonParser, function(request,response){
 
    //create cart if there is not one
    if(!request.session.cart){
