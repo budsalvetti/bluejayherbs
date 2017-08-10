@@ -10,7 +10,11 @@ define(['angular'], function (angular) {
 			},
 			controller:['$scope', function($scope){
 
+				$scope.cartExpanded = false;
 
+				$scope.toggleCartExpanded = function(){
+					$scope.cartExpanded = !$scope.cartExpanded;
+				};
 
 			}]
 		}

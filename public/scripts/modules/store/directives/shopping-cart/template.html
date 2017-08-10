@@ -1,22 +1,22 @@
-<div>
+<div style="position:relative">
     <!-- Begin Shopping Cart Header -->
-    <div>
-        <span><i class="glyphicon glyphicon-shopping-cart"></i> Your Shopping Cart <i class="glyphicon glyphicon-chevron-down"></i></span>
+    <div ng-click="toggleCartExpanded()">
+        <span><i class="glyphicon glyphicon-shopping-cart"></i> Your Shopping Cart <i class="glyphicon" ng-class="{'glyphicon-chevron-down':!cartExpanded,'glyphicon-chevron-up':cartExpanded}"></i></span>
     </div>
     <!-- End Shopping Cart Header -->
 
     <!-- Begin Expandable Shopping Cart Data -->
-    <div>
+    <div class="shopping-cart-dropdown" ng-class="{'cartExpanded': cartExpanded,'cartCollapsed': !cartExpanded}">
 
         <div ng-repeat="item in cartData.items">
           <p style="font-weight:bold">{{item.name}}</p>
-          <p>Quantity: {{item.quantity}}</p>
+          <p>quantity: {{item.quantity}}</p>
           <p>size: {{item.size}}</p>
           <p>price: {{item.price | currency}}</p>
           <p>item total: {{item.total | currency}}</p>
         </div>
 
-        <div></div>
+        <div style="font-weight:bold">CART TOTAL: {{cartData.cartTotal | currency}}</div>
     </div>
     <!-- End Expandable Shopping Cart Data -->
 </div>
