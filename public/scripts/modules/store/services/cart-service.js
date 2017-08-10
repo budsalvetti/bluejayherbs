@@ -8,17 +8,20 @@ define(['angular'],function(angular){
 			return $http.post('/store/cart/addItem',item);
 		};
 
+		var _getCart = function(){
+			return $http.get('/store/cart/getCart');
+		};
+
 		var _removeItem = function(){
 
 		};
 
 		var _updateItem = function(){
-
-
 		};
 
 		return {
 			addItem:_addItem,
+			getCart:_getCart,
 			removeItem:_removeItem,
 			updateItem:_updateItem
 		};

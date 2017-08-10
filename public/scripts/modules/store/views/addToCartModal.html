@@ -7,7 +7,7 @@
     <label ng-if="chosenProduct.size_prices.length > 1">Select size</label>
     <div class="form-group">
         <div class="checkbox" ng-repeat="sizePrice in chosenProduct.size_prices">
-            <label><input ng-click="selectItem(sizePrice)" type="radio" name="product_size" ng-model="selectedItem">&nbsp;{{sizePrice.size}}&nbsp;{{sizePrice.price | currency}}</label>
+            <label><input ng-click="selectItem(sizePrice)" type="radio" name="product_size" ng-checked="selectedItem.checked" ng-model="selectedItem">&nbsp;{{sizePrice.size}}&nbsp;{{sizePrice.price | currency}}</label>
          </div>
     </div>
 

@@ -18,6 +18,7 @@ define(['angular'],function(angular){
 		$scope.symptomFilter = '';
 		$scope.healthCatFilter = '';
 		$scope.productsToBrowse = [];
+		$scope.shoppingCartData = {};
 
 		$scope.healthCategoriesList = productsByEntries.healthCategoriesList;
 
@@ -40,9 +41,9 @@ define(['angular'],function(angular){
 			item.name = itemData.product.name;
 			item.quantity = 1;
 
-			cartService.addItem(item).then(function addToCartSuccess(cart){
+			cartService.addItem(item).then(function addToCartSuccess(shoppingCartData){
 
-				alert(JSON.stringify(cart));
+				$scope.shoppingCartData = shoppingCartData;
 
 			});
 		};
@@ -95,14 +96,18 @@ define(['angular'],function(angular){
 
 					//set the selectedItem initially to the first element
 					//this covers the case where there is only one size_price
+					//we will set a new attibute 'checked' on this object
 					$scope.selectedItem = $scope.chosenProduct.size_prices[0];
+					$scope.selectedItem["checked"] = true;
 
 					$scope.ok = function () {
 						$uibModalInstance.close({sizePrice:$scope.selectedItem,product:$scope.chosenProduct});
 					};
 
 					$scope.selectItem = function(sizePriceObj){
+						$scope.selectedItem["checked"] = false;
 						$scope.selectedItem = sizePriceObj;
+						$scope.selectedItem["checked"] = true;
 					};
 
 					$scope.cancel = function () {
@@ -160,8 +165,10 @@ define(['angular'],function(angular){
 		 */
 		var init = function(){
 			getAllProducts();
+			cartService.getCart().then(function(response){
+					$scope.shoppingCart = response.data;
+			});
 		};
-
 
 		init();
 

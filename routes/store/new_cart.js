@@ -153,5 +153,13 @@ router.route('/addItem').post(jsonParser, function(request,response){
 
 });
 
+router.route('/getCart').get(function(request,response){
+  //create cart if there is not one
+  if(!request.session.cart){
+    request.session.cart =  new Cart();
+  }
+  response.json(request.session.cart);
+});
+
 
 module.exports = router;
