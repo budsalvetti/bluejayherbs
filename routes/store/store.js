@@ -10,7 +10,10 @@ var router = express.Router();
 
 
 //all productsCache will just be an object keyed by product id
-var allProductsCache = null;
+var allProductsCache = {
+	productsById:{},
+	productsArray:[]
+};
 
 
 /**
@@ -57,7 +60,7 @@ var populateProductsCache = function(){
 					return console.error('error fetching client from pool', err);
 				}
 
-				client.query('select * from products',function(err, queryResult){
+				client.query('select * from products order by name',function(err, queryResult){
 
 					done();
 
@@ -75,18 +78,20 @@ var populateProductsCache = function(){
 
 			if(Array.isArray(queryResult.rows) && queryResult.rows.length){
 
-				//we got a result so initialize the allProductsCache
-				allProductsCache = {};
+
 
 				var recursFunc = function(){
 
 					//add prod data keyed by productId
-					allProductsCache[queryResult.rows[i].product_id] = queryResult.rows[i];
+					allProductsCache.productsById[queryResult.rows[i].productID] = queryResult.rows[i];
 
 					getSizePrices(queryResult.rows[i].product_category_id).then(function(sizePrices){
 
 						//add the size_prices array to cached prod data
-						allProductsCache[queryResult.rows[i].product_id]["size_prices"] = sizePrices.rows;
+						allProductsCache.productsById[queryResult.rows[i].productID]["size_prices"] = sizePrices.rows;
+
+						//add sizePrices to the query result row obj
+						queryResult.rows[i]["size_prices"] = sizePrices.rows;
 
 						if(i < queryResult.rows.length - 1){
 							//recall mysef
@@ -94,6 +99,8 @@ var populateProductsCache = function(){
 						}else{
 							//now we are done and all size prices for each row
 							//have been populated
+							allProductsCache.productsArray = queryResult.rows;
+							console.log(JSON.stringify(allProductsCache));
 							resolve('products are populated');
 						}
 					},function(err){
@@ -111,6 +118,21 @@ var populateProductsCache = function(){
 
 	});
 };
+
+
+/**
+ * getAllProducts
+ */
+router.route('/getAllProducts').get(function(request,response){
+	console.log("in getAllProducts");
+	 if(!allProductsCache.productsArray.length){
+		 populateProductsCache().then(function(){
+			 response.json(allProductsCache.productsArray);
+		 });
+	 }else{
+		 response.json(allProductsCache.productsArray);
+	 }
+});
 
 /**
  * findProductsByName

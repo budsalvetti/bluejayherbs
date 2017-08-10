@@ -24,6 +24,9 @@ define(['angular'],function(angular){
 		$scope.symptomsList = productsByEntries.symptomsList;
 
 
+
+
+
 		/**
 		 * @function addToCart
 		 * @description fired from add to cart button
@@ -41,6 +44,12 @@ define(['angular'],function(angular){
 
 				alert(JSON.stringify(cart));
 
+			});
+		};
+
+		var getAllProducts = function(){
+			storeService.getAllProducts().then(function(response){
+				$scope.productsToBrowse = response.data;
 			});
 		};
 
@@ -120,7 +129,16 @@ define(['angular'],function(angular){
 			$scope.selectedSymptom = symptom;
 		};
 
+		/**
+		 * function init
+		 * first we will get all products
+		 */
+		var init = function(){
+			getAllProducts();
+		};
 
+
+		init();
 
 	}]);
 

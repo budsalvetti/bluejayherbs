@@ -3,6 +3,10 @@ var app = express();
 
 app.use(express.static('./public'));
 
+app.get('/storebrowse',function(req,res){
+  res.sendFile(__dirname + '/public/index.html');
+});
+
 // begin redis and session storage setup
 var redis = require("redis");
 var redisClient = redis.createClient();
