@@ -1,1 +1,1 @@
-define(['./controllers/store-ctrl','./services/store-service','./services/cart-service'],function(){});
+define(['./controllers/store-ctrl','./services/store-service','./services/cart-service','./directives/shopping-cart/shopping-cart'],function(){});

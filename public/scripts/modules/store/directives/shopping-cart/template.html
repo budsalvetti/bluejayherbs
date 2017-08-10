@@ -1,0 +1,22 @@
+<div>
+    <!-- Begin Shopping Cart Header -->
+    <div>
+        <span><i class="glyphicon glyphicon-shopping-cart"></i> Your Shopping Cart <i class="glyphicon glyphicon-chevron-down"></i></span>
+    </div>
+    <!-- End Shopping Cart Header -->
+
+    <!-- Begin Expandable Shopping Cart Data -->
+    <div>
+
+        <div ng-repeat="item in cartData.items">
+          <p style="font-weight:bold">{{item.name}}</p>
+          <p>Quantity: {{item.quantity}}</p>
+          <p>size: {{item.size}}</p>
+          <p>price: {{item.price | currency}}</p>
+          <p>item total: {{item.total | currency}}</p>
+        </div>
+
+        <div></div>
+    </div>
+    <!-- End Expandable Shopping Cart Data -->
+</div>

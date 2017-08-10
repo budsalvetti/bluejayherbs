@@ -5,6 +5,7 @@ define(['jquery','angular','routes','./modules/main'],function($,angular){
                                              'store.services.storeService',
                                              'store.services.cartService',
                                              'store.controllers.storeCtrl',
+                                              'store.directives.shoppingCart',
                                             'ui.bootstrap']).controller('MainCtrl',['$rootScope','$scope','$state', '$stateParams', function($rootScope,$scope,$state,$stateParams){
                         
         

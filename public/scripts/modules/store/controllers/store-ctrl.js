@@ -41,9 +41,9 @@ define(['angular'],function(angular){
 			item.name = itemData.product.name;
 			item.quantity = 1;
 
-			cartService.addItem(item).then(function addToCartSuccess(shoppingCartData){
+			cartService.addItem(item).then(function addToCartSuccess(response){
 
-				$scope.shoppingCartData = shoppingCartData;
+				$scope.shoppingCartData = response.data;
 
 			});
 		};
@@ -166,7 +166,7 @@ define(['angular'],function(angular){
 		var init = function(){
 			getAllProducts();
 			cartService.getCart().then(function(response){
-					$scope.shoppingCart = response.data;
+					$scope.shoppingCartData = response.data;
 			});
 		};
 
