@@ -283,7 +283,7 @@ router.route('/getSymptomsList').get(function (request, response) {
  */
 router.route('/getProductsBySymptomId').get(function(request,response){
 
-	var symptomId = request.query.symptom_id;
+	var symptomId = request.query.id;
 	var current_product_category_id;
 	var prodQueryStr = 'select * from products where products."productID" in(select product_id from product_sample_indications where sample_indications_id=$1)';
 	var resultRows = [];
@@ -381,7 +381,7 @@ router.route('/getProductsBySymptomId').get(function(request,response){
  */
 router.route('/getProductsByHealthCategory').get(function(request,response){
 
-	var healthCategoryId = request.query.health_category_id;
+	var healthCategoryId = request.query.id;
 	var prodQueryStr = 'select * from products where products."productID" in(select product_id from product_health_category where health_category_id=$1)';
 	var resultRows = [];
 	var i = 0;

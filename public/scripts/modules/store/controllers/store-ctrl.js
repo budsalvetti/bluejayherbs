@@ -47,8 +47,31 @@ define(['angular'],function(angular){
 			});
 		};
 
+		/**
+		 * @function getAllProducts
+		 */
 		var getAllProducts = function(){
 			storeService.getAllProducts().then(function(response){
+				$scope.productsToBrowse = response.data;
+			});
+		};
+
+		/**
+		 * @function getProductsBySymptomId
+		 * @param symptomId
+		 */
+		var getProductsBySymptomId = function(symptomId){
+			storeService.getProductsBySymptomId(symptomId).then(function(response){
+				$scope.productsToBrowse = response.data;
+			});
+		};
+
+		/**
+		 * @function getProductsByHealthCatId
+		 * @param healthCategoryId
+		 */
+		var getProductsByHealthCatId = function(healthCategoryId){
+			storeService.getProductsByHealthCat(healthCategoryId).then(function(response){
 				$scope.productsToBrowse = response.data;
 			});
 		};
@@ -123,10 +146,12 @@ define(['angular'],function(angular){
 
 		$scope.selectHealthCategory = function(healthCategory){
 			$scope.selectedHealthCategory = healthCategory;
+			getProductsByHealthCatId(healthCategory.id);
 		};
 
 		$scope.selectSymptom = function(symptom){
 			$scope.selectedSymptom = symptom;
+			getProductsBySymptomId(symptom.id);
 		};
 
 		/**

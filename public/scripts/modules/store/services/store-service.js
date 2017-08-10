@@ -14,7 +14,7 @@ define(['angular'],function(angular){
 				return $http.get('/store/getProductsByHealthCategory',{params:{id:healthCategoryId}});
 			};
 
-		  var _getProductsBySymptomId = function(symtomId){
+		  var _getProductsBySymptomId = function(symptomId){
 				return $http.get('/store/getProductsBySymptomId',{params:{id:symptomId}});
 			};
 
