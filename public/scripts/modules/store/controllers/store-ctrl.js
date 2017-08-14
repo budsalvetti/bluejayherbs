@@ -4,12 +4,6 @@ define(['angular'],function(angular){
 
 	return angular.module('store.controllers.storeCtrl',[]).controller('storeCtrl',['$scope', 'storeService', 'cartService', '$uibModal', 'productsByEntries',function($scope, storeService, cartService, $uibModal, productsByEntries){
 
-		$scope.productsByArr = [{label:'All', value:'all'},
-														{label:'Health Category',value:'healthCategory'},
-														{label:'Symptom',value:'symptom'}];
-
-		$scope.selectedProductsBy = $scope.productsByArr[0];
-
 		$scope.searchingProducts = false;
 		$scope.productSearchResults = [];
 
@@ -19,13 +13,11 @@ define(['angular'],function(angular){
 		$scope.healthCatFilter = '';
 		$scope.productsToBrowse = [];
 		$scope.shoppingCartData = {};
+		$scope.viewProductsBy = "ALL";
 
 		$scope.healthCategoriesList = productsByEntries.healthCategoriesList;
 
 		$scope.symptomsList = productsByEntries.symptomsList;
-
-
-
 
 
 		/**
@@ -145,16 +137,19 @@ define(['angular'],function(angular){
 			});
 		};
 
-		$scope.setProductsBy = function(productsBy){
-			$scope.selectedProductsBy = productsBy;
+		$scope.viewAllProducts = function(){
+			$scope.viewProductsBy = "ALL";
+			getAllProducts();
 		};
 
 		$scope.selectHealthCategory = function(healthCategory){
+			$scope.viewProductsBy = 'HEALTH_CATEGORY';
 			$scope.selectedHealthCategory = healthCategory;
 			getProductsByHealthCatId(healthCategory.id);
 		};
 
 		$scope.selectSymptom = function(symptom){
+			$scope.viewProductsBy = "SYMPTOM";
 			$scope.selectedSymptom = symptom;
 			getProductsBySymptomId(symptom.id);
 		};

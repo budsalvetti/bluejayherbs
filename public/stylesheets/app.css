@@ -3,12 +3,6 @@ div.bluejay-modal .modal-content {
     overflow: auto;
 }
 
-.flex-left{
- display:flex;
- justify-content:flex-end;
-    flex-basis:1000px;
-}
-
 .add-to-cart-modal{
     margin:10px;
 }
@@ -37,6 +31,31 @@ div.bluejay-modal .modal-content {
     cursor:pointer;
 }
 
+.green-backgr{
+    background-color:green;
+}
+
+
+.search-wrapper{
+    border: 1px slategrey solid;
+    border-radius:5px;
+    background-color:white;
+    display:flex;
+    align-items:center;
+}
+
+.search-wrapper input{
+    border:none;
+    margin-right:3px;
+    width:200px;
+    align-self:stretch;
+}
+
+.search-wrapper i{
+    padding:3px;
+}
+
+
 .shopping-cart-dropdown{
     background-color:#ffffff;
     border: 2px slategrey solid;
@@ -48,6 +67,7 @@ div.bluejay-modal .modal-content {
     z-index:1;
 }
 
+
 .cartExpanded{
     max-height:300px;
     overflow-y:auto;
@@ -56,5 +76,4 @@ div.bluejay-modal .modal-content {
 .cartCollapsed{
     height:0px;
     display:none;
-    overflow:hidden;
 }

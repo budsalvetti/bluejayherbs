@@ -1,65 +1,75 @@
 <div class="container">
-<nav style="display:flex;align-items:center;padding:10px;background-color:sandybrown;border-radius:3px">
+<nav style="display:flex;flex-wrap:wrap;align-items:flex-end;align-content:space-around;justify-content:space-between;padding:10px;background-color:sandybrown;border-radius:3px">
 
-    <span>
-        View Products By:
-    </span>
-
+    <!-- Begin All products button -->
     <div style="margin-right:5px;margin-left:5px">
         <!-- Products By Dropdown -->
         <div class="dropdown">
-            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" ng-bind="selectedProductsBy.label">
-                <span class="caret"></span></button>
-            <ul class="dropdown-menu">
-                <li ng-repeat="productBy in productsByArr" ng-click="setProductsBy(productBy)" ng-bind="productBy.label"></li>
-            </ul>
+            <button class="btn btn-primary" type="button" ng-class="{'green-backgr':viewProductsBy === 'ALL'}">All Products</button>
         </div>
     </div>
+    <!-- End All products button -->
 
-    <div>
-
-    <!--Begin Symptoms dropdown -->
-    <div class="dropdown" ng-if="selectedProductsBy.value === 'symptom'">
-        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
-            {{selectedSymptom.name}}
-            <span class="caret"></span>
-        </button>
-        <div class="dropdown-menu">
-            <input type="text" placeholder="filter" style="width:95%;margin:5px" ng-model="symptomFilter"/>
-            <ul style="list-style:none;padding-left:5px;height:300px;overflow-y:auto">
-                <li ng-repeat="symptom in symptomsList | filter:symptomFilter | orderBy:'+name' track by symptom.id" ng-click="selectSymptom(symptom)" ng-bind="symptom.name"></li>
-            </ul>
+    <!--Begin Symptoms container -->
+        <div style="display:flex">
+            <div>
+                Products By Symptom
+                <div class="dropdown">
+                    <button class="btn btn-primary dropdown-toggle"
+                            ng-class="{'green-backgr':viewProductsBy === 'SYMPTOM'}"
+                            type="button"
+                            data-toggle="dropdown">
+                        {{selectedSymptom.name}}
+                        <span class="caret"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <input type="text" placeholder="filter" style="width:95%;margin:5px" ng-model="symptomFilter"/>
+                        <ul style="list-style:none;padding-left:5px;height:300px;overflow-y:auto">
+                            <li ng-repeat="symptom in symptomsList | filter:symptomFilter | orderBy:'+name' track by symptom.id" ng-click="selectSymptom(symptom)" ng-bind="symptom.name"></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
-    <!-- End Symptoms dropdown -->
+    <!-- End Symptoms container -->
 
-    <!-- Begin Health Category dropdown-->
-    <div class="dropdown" ng-if="selectedProductsBy.value === 'healthCategory'">
-        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
-            {{selectedHealthCategory.name}}
-            <span class="caret"></span>
-        </button>
-        <div class="dropdown-menu">
-            <input type="text" placeholder="filter" style="width:95%;margin:5px" ng-model="healthCatFilter"/>
-        <ul style="list-style:none;padding-left:5px;height:300px;overflow-y:auto">
-            <li ng-repeat="category in healthCategoriesList | filter:healthCatFilter | orderBy:'+name' track by category.id " ng-click="selectHealthCategory(category)" ng-bind="category.name"></li>
-        </ul>
+
+    <!-- Begin Health Category container-->
+        <div style="display:flex">
+            <div>
+                Products By Health Category
+                <div class="dropdown">
+                <button class="btn btn-primary dropdown-toggle"
+                        ng-class="{'green-backgr':viewProductsBy === 'HEALTH_CATEGORY'}"
+                        type="button"
+                        data-toggle="dropdown">
+                    {{selectedHealthCategory.name}}
+                    <span class="caret"></span>
+                </button>
+                <div class="dropdown-menu">
+                    <input type="text" placeholder="filter" style="width:95%;margin:5px" ng-model="healthCatFilter"/>
+                <ul style="list-style:none;padding-left:5px;height:300px;overflow-y:auto">
+                    <li ng-repeat="category in healthCategoriesList | filter:healthCatFilter | orderBy:'+name' track by category.id " ng-click="selectHealthCategory(category)" ng-bind="category.name"></li>
+                </ul>
+                </div>
+                </div>
+            </div>
         </div>
-    </div>
-    <!-- End Health Category dropdown -->
-
-    </div>
+        <!-- End Health Category container -->
 
 
     <!--Begin product search input -->
-    <div style="margin-left:5px;">
-        <input type="text" ng-model="chosenProduct" placeholder="Find Products By Name"
-               uib-typeahead="product as product.name for product in searchProductsByName($viewValue)"
-               typeahead-loading="searchingProducts"
-               typeahead-no-results="noResults"
-               typeahead-append-to-body="true"
-               typeahead-on-select="showChosenProduct(chosenProduct)"
-               class="form-control">
+    <div style="display:flex;margin-left:5px;">
+        <div class="search-wrapper">
+            <input type="text" ng-model="chosenProduct" placeholder="Products By Name"
+                   uib-typeahead="product as product.name for product in searchProductsByName($viewValue)"
+                   typeahead-loading="searchingProducts"
+                   typeahead-no-results="noResults"
+                   typeahead-append-to-body="true"
+                   typeahead-on-select="showChosenProduct(chosenProduct)"
+                   class="form-control">
+            <i class="glyphicon glyphicon-search"></i>
+        </div>
         <i ng-show="searchingProducts" class="glyphicon glyphicon-refresh"></i>
         <div ng-show="noResults">
             <i class="glyphicon glyphicon-remove"></i> No Products Found
@@ -68,7 +78,7 @@
     <!-- End product search input -->
 
     <!-- Begin Expandable Shopping Cart -->
-    <div class="flex-left">
+    <div>
         <shopping-cart cart-data="shoppingCartData">
         </shopping-cart>
     </div>
