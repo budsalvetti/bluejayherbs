@@ -7,12 +7,17 @@ define(['angular'],function(angular){
 		$scope.searchingProducts = false;
 		$scope.productSearchResults = [];
 
-		$scope.selectedSymptom = {name:'Select A Symptom',id:null};
-		$scope.selectedHealthCategory = {name:'Select A Health Category',id:null};
+		var defaultSelectedSymptom = {name:'Select A Symptom',id:null};
+		$scope.selectedSymptom = defaultSelectedSymptom;
+
+		var defaultSelectedHealthCategory = {name:'Select A Health Category',id:null};
+		$scope.selectedHealthCategory = defaultSelectedHealthCategory;
+
 		$scope.symptomFilter = '';
 		$scope.healthCatFilter = '';
 		$scope.productsToBrowse = [];
 		$scope.shoppingCartData = {};
+
 		$scope.viewProductsBy = "ALL";
 
 		$scope.healthCategoriesList = productsByEntries.healthCategoriesList;
@@ -139,18 +144,22 @@ define(['angular'],function(angular){
 
 		$scope.viewAllProducts = function(){
 			$scope.viewProductsBy = "ALL";
+			$scope.selectedSymptom = defaultSelectedSymptom;
+			$scope.selectedHealthCategory = defaultSelectedHealthCategory;
 			getAllProducts();
 		};
 
 		$scope.selectHealthCategory = function(healthCategory){
 			$scope.viewProductsBy = 'HEALTH_CATEGORY';
 			$scope.selectedHealthCategory = healthCategory;
+			$scope.selectedSymptom = defaultSelectedSymptom;
 			getProductsByHealthCatId(healthCategory.id);
 		};
 
 		$scope.selectSymptom = function(symptom){
 			$scope.viewProductsBy = "SYMPTOM";
 			$scope.selectedSymptom = symptom;
+			$scope.selectedHealthCategory = defaultSelectedHealthCategory;
 			getProductsBySymptomId(symptom.id);
 		};
 

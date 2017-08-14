@@ -4,7 +4,10 @@
     <!-- Begin All products button -->
     <div class="store-nav-item" style="margin-right:5px;margin-left:5px">
         <div>
-            <button class="btn btn-primary" type="button" ng-class="{'green-backgr':viewProductsBy === 'ALL'}">All Products</button>
+            <button class="btn btn-primary"
+                    ng-click="viewAllProducts()"
+                    type="button"
+                    ng-class="{'green-backgr':viewProductsBy === 'ALL'}">All Products</button>
         </div>
     </div>
     <!-- End All products button -->
