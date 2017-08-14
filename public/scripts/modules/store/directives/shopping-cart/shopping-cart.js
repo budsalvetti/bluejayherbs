@@ -8,12 +8,17 @@ define(['angular'], function (angular) {
 			scope: {
 				cartData: '='
 			},
-			controller:['$scope', function($scope){
+			controller:['$scope','cartService', function($scope){
 
 				$scope.cartExpanded = false;
 
 				$scope.toggleCartExpanded = function(){
 					$scope.cartExpanded = !$scope.cartExpanded;
+				};
+
+
+				$scope.removeItem = function(item){
+					cartService.removeItem();
 				};
 
 			}]

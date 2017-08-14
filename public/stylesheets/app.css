@@ -13,6 +13,13 @@ div.bluejay-modal .modal-content {
     justify-content:space-around;
 }
 
+i.remove-item{
+ margin-left:5px;
+}
+
+i.remove-item:hover{
+    color:orangered;
+}
 
 .store-products-container{
    display:flex;

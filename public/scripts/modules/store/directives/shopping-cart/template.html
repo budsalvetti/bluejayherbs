@@ -9,7 +9,7 @@
     <div class="shopping-cart-dropdown" ng-class="{'cartExpanded': cartExpanded,'cartCollapsed': !cartExpanded}">
 
         <div ng-repeat="item in cartData.items">
-          <p style="font-weight:bold">{{item.name}}</p>
+          <p style="font-weight:bold;display:flex;">{{item.name}} <i ng-click="removeItem(item)" title="remove item" class="glyphicon glyphicon-remove-sign remove-item"></i></p>
           <p>quantity: {{item.quantity}}</p>
           <p>size: {{item.size}}</p>
           <p>price: {{item.price | currency}}</p>

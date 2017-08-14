@@ -142,6 +142,10 @@ define(['angular'],function(angular){
 			});
 		};
 
+		/**
+		 * @function viewAllProducts
+		 * @description click handler for view all button
+		 **/
 		$scope.viewAllProducts = function(){
 			$scope.viewProductsBy = "ALL";
 			$scope.selectedSymptom = defaultSelectedSymptom;
@@ -149,6 +153,10 @@ define(['angular'],function(angular){
 			getAllProducts();
 		};
 
+		/**
+		 * @function selectHealthCategory
+		 * @description change handler for health category dropdown
+		 **/
 		$scope.selectHealthCategory = function(healthCategory){
 			$scope.viewProductsBy = 'HEALTH_CATEGORY';
 			$scope.selectedHealthCategory = healthCategory;
@@ -156,6 +164,10 @@ define(['angular'],function(angular){
 			getProductsByHealthCatId(healthCategory.id);
 		};
 
+		/**
+		 * @function selectSymptom
+		 * @description change handler for symptom select dropdown
+		 **/
 		$scope.selectSymptom = function(symptom){
 			$scope.viewProductsBy = "SYMPTOM";
 			$scope.selectedSymptom = symptom;
