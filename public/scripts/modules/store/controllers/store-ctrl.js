@@ -16,7 +16,6 @@ define(['angular'],function(angular){
 		$scope.symptomFilter = '';
 		$scope.healthCatFilter = '';
 		$scope.productsToBrowse = [];
-		$scope.shoppingCartData = {};
 
 		$scope.viewProductsBy = "ALL";
 
@@ -29,6 +28,9 @@ define(['angular'],function(angular){
 		 * @function addToCart
 		 * @description fired from add to cart button
 		 * on modal
+		 *
+		 * fires 'CART_ITEM_ADDED' event listened to by
+		 * shopping cart directive
 		 */
 		var addToCart = function(itemData){
 			var item = {};
@@ -39,9 +41,7 @@ define(['angular'],function(angular){
 			item.quantity = 1;
 
 			cartService.addItem(item).then(function addToCartSuccess(response){
-
-				$scope.shoppingCartData = response.data;
-
+				$scope.$broadcast("CART_ITEM_ADDED", response.data);
 			});
 		};
 
@@ -181,9 +181,6 @@ define(['angular'],function(angular){
 		 */
 		var init = function(){
 			getAllProducts();
-			cartService.getCart().then(function(response){
-					$scope.shoppingCartData = response.data;
-			});
 		};
 
 		init();

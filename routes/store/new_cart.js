@@ -95,21 +95,31 @@ var cartUpdate = function(cart){
 };
 
 
-cartRemoveItem = function(cart,productId,sizePriceId){
-  var currItem;
-  var itemIndex;
+cartRemoveItem = function(cart, productId, sizePriceId){
 
-  for(var i = 0; i< cart.items.length; i++){
-     currItem = cart.items[i];
-      if(currItem.productId === productId  && currItem.sizePriceId === sizePriceId ){
+  return new Promise(function(resolve,reject){
+    var currItem;
+    var itemIndex = -1;
+
+    for(var i = 0; i< cart.items.length; i++){
+      currItem = cart.items[i];
+      if(currItem.productId === Number(productId)  && currItem.sizePriceId === Number(sizePriceId) ){
         itemIndex = i;
         break;
       }
-  }
+    }
 
-  if(itemIndex){
-    cart.items.splice(itemIndex,1);
-  }
+    if(itemIndex > -1){
+      cart.items.splice(itemIndex,1);
+      cartUpdate(cart).then(function(){
+        resolve("Item successfully removed");
+      });
+    } else {
+      reject("Item not found in cart");
+    }
+
+  });
+
 };
 
 
@@ -133,7 +143,7 @@ router.route('/addItem').post(jsonParser, function(request,response){
    var quantity = Number(request.body.quantity);
 
 
-   var existingItemInCart = cartFindItem(cart,productId, sizePriceId);
+   var existingItemInCart = cartFindItem(cart, productId, sizePriceId);
 
    //update the quantity if the item is already in the cart
    if(existingItemInCart ){
@@ -144,12 +154,31 @@ router.route('/addItem').post(jsonParser, function(request,response){
 
   //return the complete updated cart data
    cartUpdate(cart).then(function(){
+     request.session.cart = cart;
     response.status(200);
     response.json(cart)
    },function(){
      response.status(500);
      response.json('there was a problem updating the cart');
    });
+
+});
+
+router.route('/removeItem/:id/:sizepriceid').delete(function(request,response){
+
+  //create cart if there is not one
+  if(!request.session.cart){
+    request.session.cart =  new Cart();
+  }
+
+  var cart = request.session.cart;
+
+  cartRemoveItem(cart,request.params.id,request.params.sizepriceid).then(function(result){
+    response.json(cart);
+  },function(error){
+    response.status(500);
+    response.json(error);
+  });
 
 });
 

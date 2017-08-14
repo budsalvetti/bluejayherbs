@@ -6,11 +6,16 @@ define(['angular'], function (angular) {
 			restrict: 'E',
 			replace: true,
 			scope: {
-				cartData: '='
 			},
-			controller:['$scope','cartService', function($scope){
+			controller:['$scope','cartService', function($scope, cartService){
 
 				$scope.cartExpanded = false;
+
+				$scope.cartData = {};
+
+				$scope.$on('CART_ITEM_ADDED', function(event, cartData){
+					 $scope.cartData = cartData;
+				});
 
 				$scope.toggleCartExpanded = function(){
 					$scope.cartExpanded = !$scope.cartExpanded;
@@ -18,8 +23,21 @@ define(['angular'], function (angular) {
 
 
 				$scope.removeItem = function(item){
-					cartService.removeItem();
+					cartService.removeItem(item).then(function(response){
+						  $scope.cartData = response.data;
+							alert(item.name + " has been removed from your cart");
+					});
 				};
+
+
+				var init = function(){
+					cartService.getCart().then(function(response){
+						$scope.cartData = response.data;
+					})
+
+				};
+
+				init();
 
 			}]
 		}

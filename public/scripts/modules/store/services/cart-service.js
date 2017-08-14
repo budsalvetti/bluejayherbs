@@ -12,8 +12,8 @@ define(['angular'],function(angular){
 			return $http.get('/store/cart/getCart');
 		};
 
-		var _removeItem = function(){
-
+		var _removeItem = function(item){
+			return $http.delete('/store/cart/removeItem/' + item.productId + "/" + item.sizePriceId);
 		};
 
 		var _updateItem = function(){
