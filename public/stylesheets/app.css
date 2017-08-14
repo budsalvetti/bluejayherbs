@@ -35,6 +35,10 @@ div.bluejay-modal .modal-content {
     background-color:green;
 }
 
+.green-backgr:hover{
+    background-color:limegreen !important;
+}
+
 
 .search-wrapper{
     border: 1px slategrey solid;
