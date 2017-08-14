@@ -67,6 +67,11 @@ div.bluejay-modal .modal-content {
     z-index:1;
 }
 
+.store-nav-item{
+    display:flex;
+    margin-bottom:5px;
+}
+
 
 .cartExpanded{
     max-height:300px;

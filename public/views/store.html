@@ -2,16 +2,15 @@
 <nav style="display:flex;flex-wrap:wrap;align-items:flex-end;align-content:space-around;justify-content:space-between;padding:10px;background-color:sandybrown;border-radius:3px">
 
     <!-- Begin All products button -->
-    <div style="margin-right:5px;margin-left:5px">
-        <!-- Products By Dropdown -->
-        <div class="dropdown">
+    <div class="store-nav-item" style="margin-right:5px;margin-left:5px">
+        <div>
             <button class="btn btn-primary" type="button" ng-class="{'green-backgr':viewProductsBy === 'ALL'}">All Products</button>
         </div>
     </div>
     <!-- End All products button -->
 
     <!--Begin Symptoms container -->
-        <div style="display:flex">
+        <div class="store-nav-item">
             <div>
                 Products By Symptom
                 <div class="dropdown">
@@ -35,7 +34,7 @@
 
 
     <!-- Begin Health Category container-->
-        <div style="display:flex">
+        <div class="store-nav-item">
             <div>
                 Products By Health Category
                 <div class="dropdown">
@@ -59,7 +58,7 @@
 
 
     <!--Begin product search input -->
-    <div style="display:flex;margin-left:5px;">
+    <div class="store-nav-item">
         <div class="search-wrapper">
             <input type="text" ng-model="chosenProduct" placeholder="Products By Name"
                    uib-typeahead="product as product.name for product in searchProductsByName($viewValue)"
@@ -78,7 +77,7 @@
     <!-- End product search input -->
 
     <!-- Begin Expandable Shopping Cart -->
-    <div>
+    <div class="store-nav-item">
         <shopping-cart cart-data="shoppingCartData">
         </shopping-cart>
     </div>
