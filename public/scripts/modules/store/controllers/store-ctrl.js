@@ -38,7 +38,7 @@ define(['angular'],function(angular){
 			item.productid = itemData.product.productID;
 			item.sizepriceid = itemData.sizePrice.id;
 			item.name = itemData.product.name;
-			item.quantity = 1;
+			item.quantity = itemData.sizePrice.quantity;
 
 			cartService.addItem(item).then(function addToCartSuccess(response){
 				$scope.$broadcast("CART_ITEM_ADDED", response.data);
