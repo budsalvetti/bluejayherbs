@@ -1,4 +1,4 @@
-<div style="position:relative">
+<div style="position:relative;min-width:300px">
     <!-- Begin Shopping Cart Header -->
     <div ng-click="toggleCartExpanded()">
         <span><i class="glyphicon glyphicon-shopping-cart"></i> Your Shopping Cart <i class="glyphicon" ng-class="{'glyphicon-chevron-down':!cartExpanded,'glyphicon-chevron-up':cartExpanded}"></i></span>
@@ -8,7 +8,12 @@
     <!-- Begin Expandable Shopping Cart Data -->
     <div class="shopping-cart-dropdown" ng-class="{'cartExpanded': cartExpanded,'cartCollapsed': !cartExpanded}">
 
-        <div ng-repeat="item in cartData.items">
+        <!-- Begin no cart items message -->
+        <div ng-if="cartData.items && !cartData.items.length">
+            Your cart is empty
+        </div>
+
+        <div class="shopping-cart-item" ng-repeat="item in cartData.items">
           <p style="font-weight:bold;display:flex;">{{item.name}} <i ng-click="removeItem(item)" title="remove item" class="glyphicon glyphicon-remove-sign remove-item"></i></p>
           <p>quantity: {{item.quantity}}</p>
           <p>size: {{item.size}}</p>
