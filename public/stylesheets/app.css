@@ -28,7 +28,6 @@ i.remove-item:hover{
     justify-content:space-between;
     padding:10px;
     background-color: #3c3c3c;
-    color:white;
     border-radius:3px;
 
 }
@@ -86,7 +85,7 @@ i.remove-item:hover{
     border-radius:3px;
     padding:5px;
     position:absolute;
-    top:20px;
+    top:30px;
     left:0px;
     z-index:1;
 }
