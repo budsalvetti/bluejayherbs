@@ -25,10 +25,7 @@ define(['jquery','angular','routes','./modules/main'],function($,angular){
                                 }
                         });
 
-        
-                        alert("in Main controller");
 
-                          debugger;
         
     }]);
     

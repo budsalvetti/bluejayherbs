@@ -5,11 +5,27 @@
     <p ng-bind="chosenProduct.description"></p>
 
     <label ng-if="chosenProduct.size_prices.length > 1">Select size</label>
+
+    <!-- Begin Size Price selection -->
     <div class="form-group">
+
         <div class="checkbox" ng-repeat="sizePrice in chosenProduct.size_prices">
             <label><input ng-click="selectItem(sizePrice)" type="radio" name="product_size" ng-checked="selectedItem.checked" ng-model="selectedItem">&nbsp;{{sizePrice.size}}&nbsp;{{sizePrice.price | currency}}</label>
-         </div>
+        </div>
+
+        <!-- Begin quantity input -->
+        <label>
+            quantity:
+            <input type="number"
+                   name="quantity"
+                   min="1"
+                   ng-model="selectedItem.quantity"
+                   style="width:50px">
+        </label>
+        <!-- End quantity input -->
+
     </div>
+    <!-- End Size Price Selection -->
 
 
     <div class="pull-right bj-btn-container">

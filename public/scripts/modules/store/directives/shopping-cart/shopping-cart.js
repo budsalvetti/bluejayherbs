@@ -15,6 +15,7 @@ define(['angular'], function (angular) {
 
 				$scope.$on('CART_ITEM_ADDED', function(event, cartData){
 					 $scope.cartData = cartData;
+					$scope.cartExpanded = true;
 				});
 
 				$scope.toggleCartExpanded = function(){

@@ -96,6 +96,7 @@ define(['angular'],function(angular){
 					//we will set a new attibute 'checked' on this object
 					$scope.selectedItem = $scope.chosenProduct.size_prices[0];
 					$scope.selectedItem["checked"] = true;
+					$scope.selectedItem.quantity = 1;
 
 					$scope.ok = function () {
 						$uibModalInstance.close({sizePrice:$scope.selectedItem,product:$scope.chosenProduct});

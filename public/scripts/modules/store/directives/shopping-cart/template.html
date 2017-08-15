@@ -1,6 +1,7 @@
 <div style="position:relative;min-width:300px">
+
     <!-- Begin Shopping Cart Header -->
-    <div ng-click="toggleCartExpanded()">
+    <div class="shopping-cart-header" ng-click="toggleCartExpanded()">
         <span><i class="glyphicon glyphicon-shopping-cart"></i> Your Shopping Cart <i class="glyphicon" ng-class="{'glyphicon-chevron-down':!cartExpanded,'glyphicon-chevron-up':cartExpanded}"></i></span>
     </div>
     <!-- End Shopping Cart Header -->
@@ -13,12 +14,14 @@
             Your cart is empty
         </div>
 
-        <div class="shopping-cart-item" ng-repeat="item in cartData.items">
-          <p style="font-weight:bold;display:flex;">{{item.name}} <i ng-click="removeItem(item)" title="remove item" class="glyphicon glyphicon-remove-sign remove-item"></i></p>
-          <p>quantity: {{item.quantity}}</p>
-          <p>size: {{item.size}}</p>
-          <p>price: {{item.price | currency}}</p>
-          <p>item total: {{item.total | currency}}</p>
+        <div class="shopping-cart-item-container">
+            <div class="shopping-cart-item" ng-repeat="item in cartData.items">
+              <p style="font-weight:bold;display:flex;">{{item.name}} <i ng-click="removeItem(item)" title="remove item" class="glyphicon glyphicon-remove-sign remove-item"></i></p>
+              <p>quantity: {{item.quantity}}</p>
+              <p>size: {{item.size}}</p>
+              <p>price: {{item.price | currency}}</p>
+              <p>item total: {{item.total | currency}}</p>
+            </div>
         </div>
 
         <div style="font-weight:bold">CART TOTAL: {{cartData.cartTotal | currency}}</div>

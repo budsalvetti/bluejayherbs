@@ -9,7 +9,7 @@ define(['angular','../module'],function(angular,editProductsModule){
         
         var init = function(){
             editProductsSvc.getAllProducts().then(function(productData){
-                $scope.allProducts = productData;
+                $scope.allProducts = productData.data.rows;
                 
             },function(error){
                 

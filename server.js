@@ -7,6 +7,18 @@ app.get('/storebrowse',function(req,res){
   res.sendFile(__dirname + '/public/index.html');
 });
 
+app.get('/administrator/main',function(req,res){
+  res.sendFile(__dirname + '/public/administrator/index.html');
+});
+
+app.get('/administrator/login',function(req,res){
+  res.sendFile(__dirname + '/public/administrator/index.html');
+});
+
+app.get('/administrator/edit_products',function(req,res){
+  res.sendFile(__dirname + '/public/administrator/index.html');
+});
+
 // begin redis and session storage setup
 var redis = require("redis");
 var redisClient = redis.createClient();

@@ -20,6 +20,18 @@ i.remove-item{
 i.remove-item:hover{
     color:orangered;
 }
+.store-nav{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:flex-end;
+    align-content:space-around;
+    justify-content:space-between;
+    padding:10px;
+    background-color: #3c3c3c;
+    color:white;
+    border-radius:3px;
+
+}
 
 .store-products-container{
    display:flex;
@@ -79,6 +91,19 @@ i.remove-item:hover{
     z-index:1;
 }
 
+.shopping-cart-item-container{
+    max-height:300px;
+    overflow-y:auto;
+}
+
+.shopping-cart-header{
+    font-size:16px;
+    color:floralwhite;
+    background-color: #3c763d;
+    border-radius:5px;
+    padding:5px;
+}
+
 .shopping-cart-item{
     border-bottom: 1px slategrey solid;
     margin-bottom: 5px;
@@ -89,10 +114,8 @@ i.remove-item:hover{
     margin-bottom:5px;
 }
 
-
 .cartExpanded{
-    max-height:300px;
-    overflow-y:auto;
+    max-height:330px;
 }
 
 .cartCollapsed{
